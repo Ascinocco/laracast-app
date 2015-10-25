@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 //use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Request;//using this instead of the above commented out request
+//use Request;//using this instead of the above commented out request
 //appearently the above is a facade but I'm not sure what difference that
 //makes
 use App\Http\Requests;
@@ -46,7 +46,9 @@ class ArticlesController extends Controller
 
     //this collects the data from the articles form
     //processes it and redirects us to the articles index page
-    public function store()
+    //Also, we're passing in validation if that never validates
+    //the function won't run
+    public function store(Requests\CreateArticleRequest $request)
     {
         //request returns all inputs stored in the GET and POST
         //super global arrays
@@ -72,7 +74,11 @@ class ArticlesController extends Controller
         //Article::create($input);
 
         //we can do the above all in one step like so
-        Article::create(Request::all());
+        //when using this $request validation we no longer need the facade
+        //Article::create(Request::all());
+
+        //our new way of doing it with validation is
+        Article::create($request->all());
 
         return redirect('articles');
     }
