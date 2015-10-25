@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Article;
-//use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 //use Request;//using this instead of the above commented out request
 //appearently the above is a facade but I'm not sure what difference that
 //makes
+use App\Http\Requests\ArticleRequest;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -48,7 +49,7 @@ class ArticlesController extends Controller
     //processes it and redirects us to the articles index page
     //Also, we're passing in validation if that never validates
     //the function won't run
-    public function store(Requests\CreateArticleRequest $request)
+    public function store(ArticleRequest $request)
     {
         //request returns all inputs stored in the GET and POST
         //super global arrays
@@ -82,4 +83,25 @@ class ArticlesController extends Controller
 
         return redirect('articles');
     }
+
+    public function edit($id)
+    {
+        //find the article by id
+        $article = Article::findOrFail($id);
+
+        //return the view with the data
+        return view('articles.edit', compact('article'));
+    }
+
+    public function update($id, ArticleRequest $request)
+    {
+        //create the new updated article
+        $article = Article::findOrFail($id);
+        //update the article
+        $article->update($request->all());
+        //redirect to the articles index page
+        return redirect('articles');
+
+    }
+
 }

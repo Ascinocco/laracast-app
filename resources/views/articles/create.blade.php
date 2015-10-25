@@ -10,42 +10,10 @@
     <!--specifiying the array 'url' => 'articles' tells the app the route-->
     <!--to pass the data to, again by the POST method-->
     {!! Form::open(['url' => 'articles']) !!}
-        <div class="form-group">
-            {!! Form::label('title', 'Title:') !!}
-            {!! Form::text('title', null, ['class' => 'form-control']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('body', 'Body:') !!}
-            {!! Form::textarea('body', null, ['class' => 'form-control']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('published_at', 'Publish On:') !!}
-            <!--When using the genric input we must specify the type which-->
-            <!--in this case is 'date'-->
-            <!--also the input box defaults to todays date-->
-            {!! Form::input('date', 'published_at', date('Y-m-d H:i:s'), ['class' => 'form-control']) !!}
-        </div>
-
-        <div class="form-group">
-            {!! Form::submit('Add Article', ['class' => 'btn btn-primary form-control']) !!}
-        </div>
-
+        @include('articles.partials.form', ['submitButtonText' => 'Create Article'])
     {!! Form::close() !!}
 
-    <!--views always have access to errors variable-->
-    @if ($errors->any())
-
-        <ul class="alert alert-danger">
-            @foreach($errors->all() as $error)
-                <li>{{$error}}</li>
-            @endforeach
-        </ul>
-    @endif
-
-
-
+    @include('errors.list')
 
     <!--GOOD NOTES ON HOW Illuminate/Html/FormFacade WORKS BELOW-->
     <!--{!! Form::open() !!}-->
