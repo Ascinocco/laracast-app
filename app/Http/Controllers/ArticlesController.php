@@ -20,7 +20,9 @@ class ArticlesController extends Controller
         //in descending order(latest())
         //all latest does is an a order by clause to the prebuilt query
         //note: you must select the column you want to order by
-        $articles = Article::latest('published_at')->get();
+        //note: published is our own method that sets a where clause to
+        //limit the data output (this is called a scope)
+        $articles = Article::latest('published_at')->published()->get();
 
         return view ('articles.index', compact('articles'));
     }
@@ -31,7 +33,7 @@ class ArticlesController extends Controller
         $article = Article::findOrFail($id);
 
         //dd is die dump
-        //dd($article);
+        //dd($article->published_at);
 
         return view('articles.show', compact('article'));
     }
@@ -48,10 +50,10 @@ class ArticlesController extends Controller
     {
         //request returns all inputs stored in the GET and POST
         //super global arrays
-        $input = Request::all();
+        //$input = Request::all();
 
         //set the published at field behind the scenes
-        $input['published_at'] = Carbon::now();
+        //$input['published_at'] = Carbon::now();
 
         //you can also do
         //$input = Request::get('nameOfField');
@@ -67,7 +69,10 @@ class ArticlesController extends Controller
 
         //this creates the article and saves it to the database in one
         //shot
-        Article::create($input);
+        //Article::create($input);
+
+        //we can do the above all in one step like so
+        Article::create(Request::all());
 
         return redirect('articles');
     }

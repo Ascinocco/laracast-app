@@ -21,6 +21,14 @@
         </div>
 
         <div class="form-group">
+            {!! Form::label('published_at', 'Publish On:') !!}
+            <!--When using the genric input we must specify the type which-->
+            <!--in this case is 'date'-->
+            <!--also the input box defaults to todays date-->
+            {!! Form::input('date', 'published_at', date('Y-m-d'), ['class' => 'form-control']) !!}
+        </div>
+
+        <div class="form-group">
             {!! Form::submit('Add Article', ['class' => 'btn btn-primary form-control']) !!}
         </div>
 
