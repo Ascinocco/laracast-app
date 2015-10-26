@@ -24,9 +24,18 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        //
+        //once the laravel app is bootstraped and ready to do the following
 
         parent::boot($router);
+
+        //note: doing this isn't necessary and in some cases may
+        // be inappropriate to do
+
+        //here we are binding the specific route wildcard to the
+        //Article Model
+        //Note: to view wildcards use the route:list command
+        //wildcards go inbetween {} ex /articles/{wildcard}
+        $router->model('articles', 'App\Article');
     }
 
     /**

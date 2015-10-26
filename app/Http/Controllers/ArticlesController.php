@@ -48,9 +48,13 @@ class ArticlesController extends Controller
     }
 
     //this fetches the article by ID
-    public function show($id)
+    //now that we've bound the object/model to the route wildcard
+    //in RouteServiceProvider.php inside the boot function
+    //are route returns the object/model directly instead of an Id number
+    //so now our show function can look like the following
+    public function show(Article $article/**$id*/)
     {
-        $article = Article::findOrFail($id);
+        //$article = Article::findOrFail($id);
 
         //dd is die dump
         //dd($article->published_at);
@@ -115,19 +119,22 @@ class ArticlesController extends Controller
         return redirect('articles');
     }
 
-    public function edit($id)
+    //please view the show methods comments to understand why id was
+    //replaced with article
+    public function edit(Article $article)
     {
         //find the article by id
-        $article = Article::findOrFail($id);
+        //$article = Article::findOrFail($id);
 
         //return the view with the data
         return view('articles.edit', compact('article'));
     }
 
-    public function update($id, ArticleRequest $request)
+    //view the show methods comments to get some insight
+    public function update(Article $article, ArticleRequest $request)
     {
         //create the new updated article
-        $article = Article::findOrFail($id);
+        //$article = Article::findOrFail($id);
         //update the article
         $article->update($request->all());
         //redirect to the articles index page
