@@ -116,7 +116,28 @@ class ArticlesController extends Controller
         //you must include the article facade for this to work
         Auth::user()->articles()->save($article);
 
+        //flash messages are temporary, they only exist for one request
+        //\Session::flash('flash_message', 'Your article has been created!');
+        //another way to send flash messages
+        //session()->flash('flash_message_important', true);
+        //use the with function to send flash messages to the page
+        //return redirect('articles')->with([
+        //    'flash_message' => 'Your article has been created!',
+        //    'flash_message_important' => true
+        //]);
+
+        //the new way of doing this with the laracasts flash package is as
+        //follows
+        //you can use a specific message like flash->success('message')
+        // or just the base flash('message') etc.
+        flash()->success('Your article has been created');
+        //to add an overlay do this and look at the
+        // custom js in the app.blade.php as you need to implement the modal
+        //from there
+        //flash()->overlay('Body','Title');
+
         return redirect('articles');
+
     }
 
     //please view the show methods comments to understand why id was
