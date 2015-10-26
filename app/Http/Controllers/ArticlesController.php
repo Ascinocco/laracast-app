@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Article;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 //use Request;//using this instead of the above commented out request
 //appearently the above is a facade but I'm not sure what difference that
 //makes
@@ -14,9 +15,27 @@ use App\Http\Controllers\Controller;
 
 class ArticlesController extends Controller
 {
+
+    public function __construct()
+    {
+        //this applies the auth middleware to the class
+        //$this->middleware('auth');
+        //to target specific routes within the controller
+        $this->middleware('auth', ['only' => 'create']);
+        //also you can replace the array with ['except'=>'index']
+        //which will apply authentication to all pages except index
+    }
+
     //this fetches all the articles
     public function index()
     {
+        //this is how to get an authenticated user
+        //the slash in front of auth is needed
+        //unless you include the article facade which I did
+        Auth::user();
+        //to get specific attribute of an authenticated user do this
+        //\Auth:user()->name;
+
         //get all the data(get())
         //in descending order(latest())
         //all latest does is an a order by clause to the prebuilt query
@@ -78,10 +97,20 @@ class ArticlesController extends Controller
         //when using this $request validation we no longer need the facade
         //Article::create(Request::all());
 
-
-
         //our new way of doing it with validation is
-        Article::create($request->all());
+        //Article::create($request->all());
+
+        //now with user authentication
+        //in order to add the user id to the article
+        //fill the article with the user submitted data
+        $article = new Article($request->all());
+
+        //associates the users articles new article and saves it
+        //Also, this is where laravel associates the user id with the
+        //article (this happens behind the scenes when save an article
+        //this way)
+        //you must include the article facade for this to work
+        Auth::user()->articles()->save($article);
 
         return redirect('articles');
     }
