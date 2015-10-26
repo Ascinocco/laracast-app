@@ -16,3 +16,10 @@ Route::get('contact', 'PagesController@contact');
 
 //route resource takes car of the above excluding the static pages
 Route::resource('articles', 'ArticlesController');
+
+//the following method registers multiple routes to multiple controllers
+//i think
+Route::controllers([
+    'auth' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController'
+]);
