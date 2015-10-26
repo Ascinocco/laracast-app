@@ -36,4 +36,14 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    //in this function we're defining the relationship between
+    //users and articles, this is needed for eloquent ORM to make
+    //associations appropriatley
+    //Here we're saying this user has many articles
+    public function articles()
+    {
+        return $this->hasMany('App\Article');
+    }
+
 }

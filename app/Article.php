@@ -12,7 +12,8 @@ class Article extends Model
     protected $fillable = [
         'title',
         'body',
-        'published_at'
+        'published_at',
+        'user_id' //temporary
     ];
 
     //this converts are published_at dats to Carbon instances
@@ -54,5 +55,12 @@ class Article extends Model
         //format the date by doing the following that will allow the time stamp
         //to be midnight on the future date
         $this->attributes['published_at'] = Carbon::parse($date);
+    }
+
+    //an article has one user
+    //this function defines that relationship
+    public function user()
+    {
+        return $this->belongsTo('App\User');
     }
 }

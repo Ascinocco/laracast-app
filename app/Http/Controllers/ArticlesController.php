@@ -78,6 +78,8 @@ class ArticlesController extends Controller
         //when using this $request validation we no longer need the facade
         //Article::create(Request::all());
 
+
+
         //our new way of doing it with validation is
         Article::create($request->all());
 
