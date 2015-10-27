@@ -45,7 +45,9 @@ class ArticlesController extends Controller
         //limit the data output (this is called a scope)
         $articles = Article::latest('published_at')->published()->get();
 
-        return view ('articles.index', compact('articles'));
+        $latest = Article::latest()->first();
+
+        return view ('articles.index', compact('articles', 'latest'));
     }
 
     //this fetches the article by ID
