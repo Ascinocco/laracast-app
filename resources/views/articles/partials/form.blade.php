@@ -17,5 +17,12 @@
 </div>
 
 <div class="form-group">
+    {!! Form::label('tag_list', 'Tags:') !!}
+    <!--since multiple tags can be selected we need to specifiy that-->
+    <!--tags[] is an array with the [] notation-->
+    {!! Form::select('tag_list[]', $tags, null,['class' => 'form-control', 'multiple']) !!}
+</div>
+
+<div class="form-group">
     {!! Form::submit($submitButtonText, ['class' => 'btn btn-primary form-control']) !!}
 </div>

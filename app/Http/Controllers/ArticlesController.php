@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Tag;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -65,7 +66,13 @@ class ArticlesController extends Controller
     //the routes us to the create article page
     public function create()
     {
-        return view ('articles.create');
+        //get the name column results and store it in tags
+        //passing id as the second parameter sets the index's name
+        //so if the name within the column is personal a representation
+        //would be array['personal'] = '1' for example
+        $tags = \App\Tag::lists('name', 'id');
+
+        return view ('articles.create', compact('tags'));
     }
 
     //this collects the data from the articles form
@@ -114,7 +121,7 @@ class ArticlesController extends Controller
         //article (this happens behind the scenes when save an article
         //this way)
         //you must include the article facade for this to work
-        Auth::user()->articles()->save($article);
+        $article = Auth::user()->articles()->save($article);
 
         //flash messages are temporary, they only exist for one request
         //\Session::flash('flash_message', 'Your article has been created!');
@@ -125,6 +132,17 @@ class ArticlesController extends Controller
         //    'flash_message' => 'Your article has been created!',
         //    'flash_message_important' => true
         //]);
+
+        //we need to get the tags submitted by the user
+        //$tagIds = $request->input('tags');
+
+        //now attach the tags to the article
+        //$article->tags()-attach($tagIds);
+
+        //we can do the above by placing the request directly
+        //within the attach functions parameters
+        $article->tags()->attach($request->input('tag_list'));
+
 
         //the new way of doing this with the laracasts flash package is as
         //follows
@@ -147,8 +165,11 @@ class ArticlesController extends Controller
         //find the article by id
         //$article = Article::findOrFail($id);
 
+        //submit our tag for editing
+        $tags = Tag::lists('name', 'id');
+
         //return the view with the data
-        return view('articles.edit', compact('article'));
+        return view('articles.edit', compact('article', 'tags'));
     }
 
     //view the show methods comments to get some insight
