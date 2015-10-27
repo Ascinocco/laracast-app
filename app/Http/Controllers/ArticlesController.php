@@ -114,14 +114,14 @@ class ArticlesController extends Controller
         //now with user authentication
         //in order to add the user id to the article
         //fill the article with the user submitted data
-        $article = new Article($request->all());
+        //$article = new Article($request->all());
 
         //associates the users articles new article and saves it
         //Also, this is where laravel associates the user id with the
         //article (this happens behind the scenes when save an article
         //this way)
         //you must include the article facade for this to work
-        $article = Auth::user()->articles()->save($article);
+        //$article = Auth::user()->articles()->save($article);
 
         //flash messages are temporary, they only exist for one request
         //\Session::flash('flash_message', 'Your article has been created!');
@@ -141,8 +141,10 @@ class ArticlesController extends Controller
 
         //we can do the above by placing the request directly
         //within the attach functions parameters
-        $article->tags()->attach($request->input('tag_list'));
+        //$article->tags()->attach($request->input('tag_list'));
 
+        //abstract the operations of this function to a private method
+        $this->createArticle($request);
 
         //the new way of doing this with the laracasts flash package is as
         //follows
@@ -179,9 +181,35 @@ class ArticlesController extends Controller
         //$article = Article::findOrFail($id);
         //update the article
         $article->update($request->all());
+
+        //pass necessary params to syncTags function
+        $this->syncTags($article, $request->input('tag_list'));
+
         //redirect to the articles index page
         return redirect('articles');
 
+    }
+
+    /**
+     * Sync up the list of tags in the database
+     *
+     * @param Article $article
+     * @param array $tags
+     */
+    private function syncTags(Article $article, array $tags)
+    {
+        //sync the tags we have in the updated request with the tags in the db
+        //that are within the article_tag pivot table
+        $article->tags()->sync($tags);
+    }
+
+    private function createArticle(ArticleRequest $request)
+    {
+        $article = Auth::user()->articles()->create($request->all());
+
+        $this->syncTags($article, $request->input('tag_list'));
+
+        return $article;
     }
 
 }
