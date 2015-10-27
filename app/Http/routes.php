@@ -2,7 +2,7 @@
 
 Route::get('foo','FooController@foo');
 
-
+Route::get('tags/{tags}', 'TagsController@show');
 
 Route::get('/', function(){
     return 'Home Page';

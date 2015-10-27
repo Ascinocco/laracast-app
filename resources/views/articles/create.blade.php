@@ -9,7 +9,7 @@
     <!--the same page/route-->
     <!--specifiying the array 'url' => 'articles' tells the app the route-->
     <!--to pass the data to, again by the POST method-->
-    {!! Form::open(['url' => 'articles']) !!}
+    {!! Form::model($article = new \App\Article, ['url' => 'articles']) !!}
         @include('articles.partials.form', ['submitButtonText' => 'Create Article'])
     {!! Form::close() !!}
 

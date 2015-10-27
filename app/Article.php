@@ -57,6 +57,11 @@ class Article extends Model
         $this->attributes['published_at'] = Carbon::parse($date);
     }
 
+    public function getPublishedAtAttribute($date)
+    {
+        return Carbon::parse($date)->format('Y-m-d H:i:s');
+    }
+
     //an article has one user
     //this function defines that relationship
     public function user()

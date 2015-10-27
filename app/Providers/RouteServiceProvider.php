@@ -35,7 +35,15 @@ class RouteServiceProvider extends ServiceProvider
         //Article Model
         //Note: to view wildcards use the route:list command
         //wildcards go inbetween {} ex /articles/{wildcard}
-        $router->model('articles', 'App\Article');
+        //$router->model('articles', 'App\Article');
+
+        $router->bind('articles', function($id){
+            return \App\Article::published()->findOrFail($id);
+        });
+
+        $router->bind('tags', function($name){
+            return \App\Tag::where('name', $name)->findOrFail($name);
+        });
     }
 
     /**
