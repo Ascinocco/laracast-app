@@ -1,5 +1,12 @@
 <?php
 
+Route::get('foo','FooController@foo');
+
+
+
+Route::get('/', function(){
+    return 'Home Page';
+});
 Route::get('about', 'PagesController@about');
 Route::get('contact', 'PagesController@contact');
 
@@ -24,6 +31,7 @@ Route::controllers([
     'password' => 'Auth\PasswordController'
 ]);
 //uses our custom middleware
+/**
 Route::get('foo', ['middleware' => 'manager' ,function(){
     return 'this page may only be viewed by managers';
-}]);
+}]);*/
